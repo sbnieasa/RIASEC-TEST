@@ -3,135 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مقياس هولاند الثلاثي - تقريرك المهني</title>
+    <title>مقياس هولاند المهني المطور - 60 سؤالاً</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
-        body { font-family: 'Tajawal', sans-serif; background: #f4f7fa; }
-        .glass-card { background: white; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
-        .type-card { transition: transform 0.3s; border-right: 5px solid #6366f1; }
-        .type-card:hover { transform: scale(1.01); }
+        body { font-family: 'Tajawal', sans-serif; background: #f0f4f8; color: #1e293b; }
+        .glass-card { background: white; border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+        .type-card { border-right: 6px solid #4f46e5; transition: all 0.3s ease; }
+        .type-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .btn-choice { transition: all 0.2s; border: 2px solid #e2e8f0; }
+        .btn-choice:active { transform: scale(0.98); }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 md:p-10">
 
     <div class="max-w-5xl mx-auto">
-        <div id="name-screen" class="glass-card p-10 text-center max-w-2xl mx-auto">
-            <div class="mb-6 text-indigo-600">
-                <svg class="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div id="name-screen" class="glass-card p-12 text-center max-w-2xl mx-auto border border-white">
+            <div class="mb-6 inline-block p-4 bg-indigo-50 rounded-full text-indigo-600">
+                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <h1 class="text-3xl font-black text-gray-800 mb-4">اكتشف كود شخصيتك المهني</h1>
-            <p class="text-gray-500 mb-8">سيوضح لك هذا الاختبار أعلى 3 أنماط تميز شخصيتك</p>
-            <input type="text" id="student-name-input" placeholder="أدخل اسمك الكريم" 
-                   class="w-full p-4 border-2 border-gray-100 rounded-2xl mb-6 text-center text-xl focus:border-indigo-500 outline-none transition">
-            <button onclick="startQuiz()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition">ابدأ الاختبار (36 سؤالاً)</button>
+            <h1 class="text-4xl font-black text-gray-900 mb-4">مستقبلك المهني يبدأ هنا</h1>
+            <p class="text-gray-500 mb-10 text-lg">اختبار هولاند العالمي بنسخته العربية المبسطة (60 سؤالاً)</p>
+            <input type="text" id="student-name-input" placeholder="اكتب اسمك هنا" 
+                   class="w-full p-5 border-2 border-gray-100 rounded-3xl mb-8 text-center text-xl focus:border-indigo-500 outline-none transition-all shadow-sm">
+            <button onclick="startQuiz()" class="w-full bg-indigo-600 text-white py-5 rounded-3xl font-black text-xl hover:bg-indigo-700 shadow-xl shadow-indigo-200 transition-all">ابدأ رحلة الاكتشاف</button>
         </div>
 
         <div id="quiz-section" class="hidden max-w-2xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <span id="progress-text" class="font-bold text-indigo-600">السؤال 1 / 36</span>
-                <div class="w-40 bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div id="progress-bar" class="bg-indigo-600 h-full transition-all" style="width: 0%"></div>
+            <div class="flex justify-between items-center mb-8 px-2">
+                <div>
+                    <span class="text-gray-400 block text-sm">تقدمك الآن</span>
+                    <span id="progress-text" class="font-bold text-indigo-600 text-xl">1 / 60</span>
+                </div>
+                <div class="w-48 bg-gray-200 h-3 rounded-full overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="bg-indigo-600 h-full transition-all duration-500" style="width: 0%"></div>
                 </div>
             </div>
-            <div id="questions-area" class="glass-card p-8 md:p-12"></div>
+            <div id="questions-area" class="glass-card p-10 md:p-14 border border-white relative overflow-hidden">
+                </div>
         </div>
 
-        <div id="result-area" class="hidden">
-            <div id="capture-area" class="glass-card p-8 md:p-12">
-                <div class="flex flex-col md:flex-row justify-between border-b pb-8 mb-8 gap-4">
-                    <div>
-                        <h2 class="text-4xl font-black text-indigo-900 mb-2">تقرير التوجيه المهني</h2>
-                        <p class="text-xl text-gray-600">اسم الطالب: <span id="final-name" class="font-bold text-indigo-600"></span></p>
-                        <p id="holland-code-badges" class="flex gap-2 mt-4"></p>
+        <div id="result-area" class="hidden animate-in fade-in duration-700">
+            <div id="capture-area" class="glass-card p-8 md:p-12 border border-white">
+                <div class="flex flex-col md:flex-row justify-between items-start border-b border-gray-100 pb-10 mb-10 gap-8">
+                    <div class="flex-1">
+                        <span class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-sm font-bold mb-4 inline-block">التقرير المهني المعتمد</span>
+                        <h2 class="text-5xl font-black text-slate-900 mb-3 leading-tight">تحليل الميول المهنية</h2>
+                        <p class="text-2xl text-gray-500 mb-6">البطل: <span id="final-name" class="font-bold text-indigo-600"></span></p>
+                        <div id="holland-code-badges" class="flex gap-3"></div>
                     </div>
-                    <div class="bg-indigo-50 p-4 rounded-2xl flex items-center justify-center">
-                        <canvas id="riasecChart" width="250" height="250"></canvas>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
+                        <canvas id="riasecChart" width="280" height="280"></canvas>
                     </div>
                 </div>
 
-                <h3 class="text-2xl font-bold text-gray-800 mb-6">تحليل أعلى 3 سمات لشخصيتك:</h3>
-                <div id="top-three-analysis" class="grid gap-6">
-                    </div>
+                <h3 class="text-3xl font-black text-slate-800 mb-8 flex items-center gap-3">
+                    <span class="w-2 h-8 bg-indigo-600 rounded-full"></span>
+                    تحليل شخصيتك المهنية:
+                </h3>
+                <div id="top-three-analysis" class="grid gap-8"></div>
 
-                <div class="mt-12 bg-gray-900 text-white p-8 rounded-3xl">
-                    <h4 class="text-xl font-bold mb-4 text-indigo-300">نصيحة الخبراء المختصرة:</h4>
-                    <p id="final-advice" class="leading-relaxed opacity-90"></p>
+                <div class="mt-12 bg-slate-900 text-white p-10 rounded-[40px] shadow-2xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h4 class="text-2xl font-bold mb-4 text-indigo-300">خلاصة التوجه الاستراتيجي:</h4>
+                        <p id="final-advice" class="text-lg leading-relaxed text-slate-300 italic"></p>
+                    </div>
+                    <div class="absolute -right-10 -bottom-10 opacity-10">
+                        <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2 .712V17a1 1 0 001 1z"></path></svg>
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-10 flex flex-wrap justify-center gap-4">
-                <button onclick="downloadPDF()" class="bg-indigo-600 text-white px-10 py-4 rounded-2xl font-bold shadow-xl hover:bg-indigo-700">تحميل التقرير الكامل PDF</button>
-                <button onclick="location.reload()" class="bg-white text-gray-500 border px-10 py-4 rounded-2xl font-bold">إعادة المحاولة</button>
+            <div class="mt-12 flex flex-wrap justify-center gap-6 no-print">
+                <button onclick="downloadPDF()" class="bg-indigo-600 text-white px-12 py-5 rounded-3xl font-black shadow-2xl shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-1 transition-all">تحميل التقرير PDF</button>
+                <button onclick="location.reload()" class="bg-white text-gray-500 border-2 border-gray-100 px-12 py-5 rounded-3xl font-bold hover:bg-gray-50 transition-all">إعادة الاختبار</button>
             </div>
         </div>
     </div>
 
     <script>
+        // 60 سؤالاً بلهجة عربية مبسطة
         const questions = [
-            // R
-            { text: "هل تحب العمل بالأدوات والمعدات الميكانيكية؟", cat: "R" },
-            { text: "هل تفضل العمل في المشاريع الميدانية أو الخارجية؟", cat: "R" },
-            { text: "هل لديك القدرة على إصلاح الأعطال في منزلك؟", cat: "R" },
-            { text: "هل تميل لتعلم مهارات مثل النجارة أو الكهرباء؟", cat: "R" },
-            { text: "هل تفضل النتائج العملية الملموسة على النظريات؟", cat: "R" },
-            { text: "هل تستمتع بالأنشطة البدنية التي تتطلب قوة وتحملاً؟", cat: "R" },
-            // I
-            { text: "هل تحب دراسة العلوم والبحث عن أسباب الظواهر؟", cat: "I" },
-            { text: "هل تقضي وقتاً طويلاً في التفكير والتحليل المنطقي؟", cat: "I" },
-            { text: "هل تستهويك المسائل الرياضية أو الألغاز الفكرية؟", cat: "I" },
-            { text: "هل تحب العمل في بيئة أكاديمية أو مختبرات بحثية؟", cat: "I" },
-            { text: "هل تميل للاستقلالية والبحث عن حلول بمفردك؟", cat: "I" },
-            { text: "هل تحب قراءة الكتب والمجلات العلمية المتخصصة؟", cat: "I" },
-            // A
-            { text: "هل تحب التعبير عن نفسك من خلال الفن أو الكتابة؟", cat: "A" },
-            { text: "هل تميل لابتكار طرق جديدة وغير تقليدية للعمل؟", cat: "A" },
-            { text: "هل تنجذب للتصميم، الديكور، أو الهندسة المعمارية؟", cat: "A" },
-            { text: "هل تفضل العمل في بيئة تسمح بالإبداع والحرية؟", cat: "A" },
-            { text: "هل تجيد التعامل مع الألوان والأشكال والجماليات؟", cat: "A" },
-            { text: "هل ترى نفسك شخصاً حساساً وخيالياً ومبدعاً؟", cat: "A" },
-            // S
-            { text: "هل تجد سعادة في مساعدة الآخرين وتقديم الدعم لهم؟", cat: "S" },
-            { text: "هل تحب العمل ضمن فريق والتفاعل الاجتماعي الدائم؟", cat: "S" },
-            { text: "هل تمتلك مهارة التدريس أو شرح الأفكار للآخرين؟", cat: "S" },
-            { text: "هل تهتم بالقضايا الإنسانية والتنمية الاجتماعية؟", cat: "S" },
-            { text: "هل يلجأ إليك الأصدقاء لطلب النصيحة والمشورة؟", cat: "S" },
-            { text: "هل تفضل المهن التي تخدم المجتمع ككل؟", cat: "S" },
-            // E
-            { text: "هل تحب قيادة الآخرين وإدارة المشاريع والفرق؟", cat: "E" },
-            { text: "هل تمتلك قدرة عالية على الإقناع والتفاوض؟", cat: "E" },
-            { text: "هل تطمح لتبوء مناصب إدارية أو تأسيس شركة؟", cat: "E" },
-            { text: "هل تستمتع بالتحدث أمام الجمهور وتقديم العروض؟", cat: "E" },
-            { text: "هل تحب المنافسة وتسعى دائماً لتحقيق الصدارة؟", cat: "E" },
-            { text: "هل تهتم بعالم المال والأعمال والاقتصاد؟", cat: "E" },
-            // C
-            { text: "هل تحب تنظيم الملفات والبيانات بدقة عالية؟", cat: "C" },
-            { text: "هل تفضل القواعد الواضحة والعمل المنهجي المنظم؟", cat: "C" },
-            { text: "هل تهتم بمراجعة التفاصيل الصغيرة بدقة شديدة؟", cat: "C" },
-            { text: "هل تستمتع بالعمل مع الأرقام والحسابات المالية؟", cat: "C" },
-            { text: "هل تفضل الاستقرار الوظيفي والعمل المكتبي؟", cat: "C" },
-            { text: "هل تحرص على إنجاز مهامك وفق جدول زمني محدد؟", cat: "C" }
+            // الواقعي (R)
+            { text: "تحب تصلح الأشياء الخربانة في البيت (كهرباء، سباكة، أثاث)؟", cat: "R" },
+            { text: "تفضل الشغل اللي فيه حركة وتعب بدني أكثر من الجلوس عالمكتب؟", cat: "R" },
+            { text: "تحب تستخدم يدك وأدواتك في تركيب أو فك الأجهزة؟", cat: "R" },
+            { text: "تميل لزراعة النباتات أو الاهتمام بالحديقة؟", cat: "R" },
+            { text: "تحب الرياضة اللي فيها مجهود بدني عالي؟", cat: "R" },
+            { text: "تفضل تشتغل بيدك وتشوف نتيجة ملموسة قدامك؟", cat: "R" },
+            { text: "تحب تطلع رحلات برية وتتعامل مع الطبيعة والخيام؟", cat: "R" },
+            { text: "تحب فك وتركيب قطع السيارات أو الدراجات؟", cat: "R" },
+            { text: "تفضل الملابس العملية المريحة على الملابس الرسمية؟", cat: "R" },
+            { text: "تحب تشغل آلات أو معدات ثقيلة؟", cat: "R" },
+            // البحثي (I)
+            { text: "تحب تبحث وتعرف كيف الأشياء تشتغل من داخل؟", cat: "I" },
+            { text: "تستمتع بحل الألغاز الصعبة اللي تحتاج تفكير عميق؟", cat: "I" },
+            { text: "تحب مادة الرياضيات أو الكيمياء أو الفيزياء؟", cat: "I" },
+            { text: "تقدر تجلس وقت طويل تقرأ عن موضوع علمي يشدك؟", cat: "I" },
+            { text: "تحب تسوي تجارب بنفسك عشان تتأكد من المعلومة؟", cat: "I" },
+            { text: "تفضل تشتغل لحالك في بيئة هادية وتفكر بتركيز؟", cat: "I" },
+            { text: "تحب تتابع أخبار الاختراعات والاكتشافات الجديدة؟", cat: "I" },
+            { text: "عندك فضول تعرف 'ليش' هذا الشيء صار كذا؟", cat: "I" },
+            { text: "تفضل المهن اللي فيها تحليل بيانات وأرقام؟", cat: "I" },
+            { text: "تحب تستخدم الكمبيوتر في البرمجة أو البحث العلمي؟", cat: "I" },
+            // الفني (A)
+            { text: "تحب ترسم أو تصمم أو تنسق ألوان ملابسك وغرفتك؟", cat: "A" },
+            { text: "تفضل تشتغل بطريقتك الخاصة وتبعد عن الروتين؟", cat: "A" },
+            { text: "تحب تكتب قصص، خواطر، أو تعبر عن مشاعرك بالكتابة؟", cat: "A" },
+            { text: "تهتم بالديكور والأشياء اللي شكلها جميل وجذاب؟", cat: "A" },
+            { text: "تحب الفنون بجميع أنواعها (رسم، تمثيل، تصوير)؟", cat: "A" },
+            { text: "تعتبر نفسك شخص خيالي وأفكارك دايمًا جديدة؟", cat: "A" },
+            { text: "تحب تصمم شعارات أو تعدل صور بالبرامج؟", cat: "A" },
+            { text: "تفضل الشغل اللي فيه إبداع وحرية وما فيه قيود؟", cat: "A" },
+            { text: "تستمتع بمشاهدة الأفلام اللي فيها تصوير فني مميز؟", cat: "A" },
+            { text: "تحب تبتكر حلول غير تقليدية للمشاكل؟", cat: "A" },
+            // الاجتماعي (S)
+            { text: "تحب تساعد الناس وتسمع مشاكلهم وتحاول تحلها؟", cat: "S" },
+            { text: "تنبسط لما تشرح معلومة لغيرك ويفهمها منك؟", cat: "S" },
+            { text: "تحب الشغل الجماعي وتكوين علاقات مع الزملاء؟", cat: "S" },
+            { text: "تفضل المهن اللي فيها خدمة للناس مثل التعليم أو التمريض؟", cat: "S" },
+            { text: "تحب تتطوع في الجمعيات الخيرية أو المبادرات المجتمعية؟", cat: "S" },
+            { text: "عندك صبر وطولة بال في التعامل مع الأطفال أو كبار السن؟", cat: "S" },
+            { text: "تحب تدرب الناس وتساعدهم يطورون مهاراتهم؟", cat: "S" },
+            { text: "تفضل تشتغل في مكان فيه حركة وناس وكلام؟", cat: "S" },
+            { text: "تحس براحة لما تكون جزء من فريق متعاون؟", cat: "S" },
+            { text: "يهمك الأثر الاجتماعي لعملك أكثر من الراتب؟", cat: "S" },
+            // المبادر (E)
+            { text: "تحب تقود المجموعات وتوزع المهام على غيرك؟", cat: "E" },
+            { text: "عندك قدرة تقنع اللي قدامك برأيك وبسهولة؟", cat: "E" },
+            { text: "تحلم إنك تفتح مشروعك الخاص وتكون أنت المدير؟", cat: "E" },
+            { text: "تحب تدخل في تحديات ومنافسات قوية؟", cat: "E" },
+            { text: "تستمتع بالحديث أمام الناس وإلقاء الكلمات؟", cat: "E" },
+            { text: "يهمك إنك تترقى وتوصل لمناصب عالية في الشغل؟", cat: "E" },
+            { text: "تحب عالم التجارة، البيع، والشراء؟", cat: "E" },
+            { text: "عندك جرأة في اتخاذ قرارات صعبة وبسرعة؟", cat: "E" },
+            { text: "تحب تخطط لمشاريع وتشوف كيف تنجح وتكبر؟", cat: "E" },
+            { text: "تفضل الوظيفة اللي فيها حوافز مادية على قد مجهودك؟", cat: "E" },
+            // التقليدي (C)
+            { text: "تحب تمشي على نظام واضح وخطوات محددة في شغلك؟", cat: "C" },
+            { text: "تهتم بالدقة وتحب كل شيء يكون في مكانه المرتب؟", cat: "C" },
+            { text: "تحب تشتغل على الجداول والبيانات والترتيب؟", cat: "C" },
+            { text: "تفضل الشغل المكتبي المنظم والواضح؟", cat: "C" },
+            { text: "تحب تراجع التفاصيل الصغيرة وتتأكد إن ما فيه أخطاء؟", cat: "C" },
+            { text: "تنبسط لما تخلص شغلك في الوقت المحدد بالضبط؟", cat: "C" },
+            { text: "تحب تحفظ الملفات وترتبها بطريقة يسهل الوصول لها؟", cat: "C" },
+            { text: "تفضل القوانين الواضحة وتلتزم فيها بكل دقة؟", cat: "C" },
+            { text: "تحب تتعامل مع الأرقام والحسابات والميزانيات؟", cat: "C" },
+            { text: "تعتبر نفسك شخص عملي، واقعي، ومنظم جداً؟", cat: "C" }
         ];
+
+        const categories = {
+            R: { 
+                t: "الواقعي (العملي)", 
+                d: "أنت شخص تحب العمل بيدك والتعامل مع الآلات والأدوات. تميل للواقعية وتبتعد عن الخيال الواسع في العمل، وتفضل النتائج الملموسة.", 
+                uni: "كليات الهندسة، التقنية، الزراعة، العلوم الرياضية.",
+                jobs: "هندسة ميكانيكية، طب أسنان، طيران، أمن سيبراني (جانب تقني)، فنون الطهي، هندسة معمارية.",
+                color: "blue" 
+            },
+            I: { 
+                t: "البحثي (المفكر)", 
+                d: "أنت شخص تحلل الأمور، فضولي جداً، وتحب حل المشكلات المعقدة. تفضل العمل الذهني والبحث العلمي على العمل البدني.", 
+                uni: "كليات الطب، العلوم، علوم الحاسب، مراكز الأبحاث.",
+                jobs: "طب بشري، برمجة، مختبرات، فيزياء، ذكاء اصطناعي، تحليل بيانات، علم نفس تجريبي.",
+                color: "indigo" 
+            },
+            A: { 
+                t: "الفني (المبدع)", 
+                d: "أنت شخص مبدع، مستقل، وتكره الروتين. تحب التعبير عن نفسك بطرق غير تقليدية وتمتلك حساً جمالياً عالياً.", 
+                uni: "كليات التصميم، الفنون، الآداب، الإعلام.",
+                jobs: "تصميم جرافيك، هندسة ديكور، تسويق إبداعي، تأليف، ترجمة، إنتاج مرئي، عمارة.",
+                color: "purple" 
+            },
+            S: { 
+                t: "الاجتماعي (المساعد)", 
+                d: "أنت شخص محب للناس، تمتلك مهارة عالية في التواصل والتعاطف. تجد سعادتك في تعليم الآخرين أو علاجهم أو مساعدتهم.", 
+                uni: "كليات التربية، العلوم الإنسانية، التمريض، الخدمة الاجتماعية.",
+                jobs: "تدريس، استشارات نفسية، موارد بشرية (HR)، تمريض، علاقات عامة، تدريب وتطوير.",
+                color: "green" 
+            },
+            E: { 
+                t: "المبادر (القيادي)", 
+                d: "أنت شخص طموح، واثق من نفسك، وتمتلك قدرة كبيرة على الإقناع. تحب القيادة، إدارة المشاريع، والمخاطرة المدروسة.", 
+                uni: "كليات إدارة الأعمال، القانون، السياسة، الاقتصاد.",
+                jobs: "إدارة مشاريع، محاماة، ريادة أعمال، مبيعات، إدارة بنوك، سياسة، تسويق رقمي.",
+                color: "orange" 
+            },
+            C: { 
+                t: "التقليدي (المنظم)", 
+                d: "أنت شخص دقيق جداً، تحب النظام والقواعد والترتيب. تجيد التعامل مع البيانات والأرقام وتستمتع بالعمل المنهجي.", 
+                uni: "كليات المحاسبة، الإدارة المالية، تقنية المعلومات، القانون الإداري.",
+                jobs: "محاسبة، تدقيق مالي، إدارة مكاتب، تحليل نظم، أرشفة رقمية، أمن معلومات، إدارة جودة.",
+                color: "gray" 
+            }
+        };
 
         let studentName = "";
         let currentIdx = 0;
         let scores = { R:0, I:0, A:0, S:0, E:0, C:0 };
 
-        const categories = {
-            R: { t: "الواقعي", d: "عملي، ميكانيكي، ومحب للطبيعة. يفضل العمل بالأشياء بدلاً من البشر.", c: "هندسة، طب أسنان، زراعة، طيران، تقنية حاسب.", color: "blue" },
-            I: { t: "البحثي", d: "تحليلي، فضولي، ومفكر. يحب حل المشكلات المعقدة والبحث العلمي.", c: "طب بشري، مختبرات، فيزياء، برمجة، رياضيات.", color: "indigo" },
-            A: { t: "الفني", d: "مبدع، مستقل، وغير تقليدي. يميل للفنون والتصميم والتعبير الحر.", c: "عمارة، تصميم، لغات، إعلام، فنون جميلة.", color: "purple" },
-            S: { t: "الاجتماعي", d: "متعاون، داعم، وإنساني. يفضل مساعدة الناس وتعليمهم وتدريبهم.", c: "تعليم، تمريض، علم نفس، موارد بشرية، استشارات.", color: "green" },
-            E: { t: "المبادر", d: "واثق، قيادي، ومقنع. يحب المخاطرة وإدارة الأعمال والبيع.", c: "إدارة، قانون، سياسة، تسويق، ريادة أعمال.", color: "orange" },
-            C: { t: "التقليدي", d: "منظم، دقيق، ومنهجي. يحب العمل مع البيانات والأرقام والأنظمة.", c: "محاسبة، مالية، أمن سيبراني، إحصاء، إدارة مكاتب.", color: "gray" }
-        };
-
         function startQuiz() {
             const val = document.getElementById('student-name-input').value;
-            if(!val) return alert("لطفاً، أدخل اسمك");
+            if(!val) return alert("لطفاً، أدخل اسمك للبدء");
             studentName = val;
             document.getElementById('name-screen').classList.add('hidden');
             document.getElementById('quiz-section').classList.remove('hidden');
@@ -141,16 +216,16 @@
         function renderQ() {
             const q = questions[currentIdx];
             document.getElementById('questions-area').innerHTML = `
-                <div class="animate-in fade-in">
-                    <h3 class="text-2xl font-bold mb-10 text-gray-800 leading-relaxed">${q.text}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <button onclick="answer(1, '${q.cat}')" class="p-6 border-2 rounded-2xl hover:bg-indigo-50 hover:border-indigo-600 font-bold transition">نعم، أتفق تماماً</button>
-                        <button onclick="answer(0, '${q.cat}')" class="p-6 border-2 rounded-2xl hover:bg-red-50 hover:border-red-600 font-bold transition">لا، لا أتفق</button>
+                <div class="animate-in slide-in-from-left duration-300">
+                    <h3 class="text-3xl font-bold mb-12 text-slate-800 leading-snug">${q.text}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <button onclick="answer(1, '${q.cat}')" class="btn-choice p-7 rounded-3xl bg-indigo-600 text-white font-black text-xl shadow-lg hover:bg-indigo-700">نعم، أتفق</button>
+                        <button onclick="answer(0, '${q.cat}')" class="btn-choice p-7 rounded-3xl bg-white text-gray-400 font-bold text-xl hover:border-red-200 hover:text-red-500">لا، لا أتفق</button>
                     </div>
                 </div>
             `;
-            document.getElementById('progress-text').innerText = `السؤال ${currentIdx+1} / 36`;
-            document.getElementById('progress-bar').style.width = ((currentIdx+1)/36 * 100) + "%";
+            document.getElementById('progress-text').innerText = `${currentIdx+1} / 60`;
+            document.getElementById('progress-bar').style.width = ((currentIdx+1)/60 * 100) + "%";
         }
 
         function answer(v, c) {
@@ -171,59 +246,78 @@
             const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
             const top3 = sorted.slice(0, 3);
             
-            // عرض الكود (مثلاً RIA)
             const codeBadges = document.getElementById('holland-code-badges');
             codeBadges.innerHTML = top3.map(item => `
-                <span class="bg-indigo-600 text-white px-4 py-1 rounded-full font-black text-xl shadow-lg">${item[0]}</span>
+                <span class="bg-indigo-600 text-white px-6 py-2 rounded-2xl font-black text-2xl shadow-lg">${item[0]}</span>
             `).join('');
 
-            // عرض التحليل الثلاثي
             const analysisDiv = document.getElementById('top-three-analysis');
             analysisDiv.innerHTML = top3.map((item, index) => {
                 const info = categories[item[0]];
                 return `
-                    <div class="type-card bg-gray-50 p-6 rounded-2xl">
-                        <div class="flex justify-between items-center mb-2">
-                            <h4 class="text-xl font-bold text-indigo-900">${index+1}. نمط ${info.t}</h4>
-                            <span class="text-indigo-600 font-bold">قوة السمة: ${Math.round(item[1]/6 * 100)}%</span>
+                    <div class="type-card bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h4 class="text-2xl font-black text-slate-800">${index+1}. نمط ${info.t}</h4>
+                            <span class="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full font-bold">القوة: ${item[1]*10}%</span>
                         </div>
-                        <p class="text-gray-600 mb-4">${info.d}</p>
-                        <div class="text-sm">
-                            <span class="font-bold text-gray-800">التخصصات المقترحة:</span>
-                            <span class="text-indigo-600">${info.c}</span>
+                        <p class="text-gray-600 text-lg mb-6 leading-relaxed">${info.d}</p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-blue-50 p-5 rounded-2xl">
+                                <span class="block font-black text-blue-800 mb-2 underline">الكليات المقترحة:</span>
+                                <p class="text-blue-700">${info.uni}</p>
+                            </div>
+                            <div class="bg-indigo-50 p-5 rounded-2xl">
+                                <span class="block font-black text-indigo-800 mb-2 underline">أبرز التخصصات:</span>
+                                <p class="text-indigo-700">${info.jobs}</p>
+                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            document.getElementById('final-advice').innerText = `يا ${studentName}، نتيجتك تظهر توازناً فريداً بين الأنماط (${top3[0][0]}, ${top3[1][0]}, ${top3[2][0]}). يفضل أن تختار تخصصاً يجمع بين هذه الميول، فإذا كنت (بحثي وفني) مثلاً، فإن "العمارة" أو "هندسة التصميم" هي الخيار الأمثل لك.`;
+            document.getElementById('final-advice').innerText = `بناءً على تحليلك الثلاثي (${top3[0][0]}${top3[1][0]}${top3[2][0]})، أنت تمتلك مزيجاً نادراً يجمع بين ${categories[top3[0][0]].t} و ${categories[top3[1][0]].t}. ننصحك بالتوجه نحو التخصصات التي تمنحك القدرة على الإبداع مع الحفاظ على الجانب التحليلي أو التنظيمي. مستقبلك واعد في المجالات التي ذكرناها أعلاه!`;
 
-            // الرسم البياني
             new Chart(document.getElementById('riasecChart'), {
                 type: 'radar',
                 data: {
                     labels: ['واقعي', 'بحثي', 'فني', 'اجتماعي', 'مبادر', 'تقليدي'],
                     datasets: [{
-                        label: 'خريطة ميولك',
+                        label: 'خريطة ميولك المهنية',
                         data: [scores.R, scores.I, scores.A, scores.S, scores.E, scores.C],
-                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
-                        borderColor: 'rgb(99, 102, 241)',
-                        pointBackgroundColor: 'rgb(99, 102, 241)'
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: '#4f46e5',
+                        pointBackgroundColor: '#4f46e5',
+                        borderWidth: 3
                     }]
                 },
-                options: { scales: { r: { suggestMin: 0, suggestMax: 6, ticks: { display: false } } }, plugins: { legend: { display: false } } }
+                options: { 
+                    scales: { 
+                        r: { 
+                            suggestMin: 0, suggestMax: 10,
+                            grid: { color: '#f1f5f9' },
+                            angleLines: { color: '#f1f5f9' },
+                            ticks: { display: false } 
+                        } 
+                    }, 
+                    plugins: { legend: { display: false } } 
+                }
             });
         }
 
         async function downloadPDF() {
-            const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 2 });
+            const btn = document.querySelector('.no-print');
+            const element = document.getElementById('capture-area');
+            const canvas = await html2canvas(element, { 
+                scale: 2,
+                backgroundColor: '#f0f4f8'
+            });
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
             const w = pdf.internal.pageSize.getWidth();
             const h = (canvas.height * w) / canvas.width;
             pdf.addImage(imgData, 'PNG', 0, 0, w, h);
-            pdf.save(`Holland_Report_${studentName}.pdf`);
+            pdf.save(`تقرير_هولاند_${studentName}.pdf`);
         }
     </script>
 </body>
