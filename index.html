@@ -3,101 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التوجيه المهني | بارسونز وهولاند</title>
+    <title>المستشار المهني الذكي | مقياس هولاند وبارسونز</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
-        body { font-family: 'Tajawal', sans-serif; background: #f8fafc; color: #1e293b; }
-        .glass-card { background: white; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.8); }
-        .theory-box { border-right: 4px solid #4f46e5; background: #f9faff; transition: all 0.3s; }
-        .theory-box:hover { background: #eff6ff; }
-        .btn-primary { background: #4f46e5; color: white; transition: all 0.3s; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
-        .btn-primary:hover { background: #4338ca; transform: translateY(-2px); }
-        .type-card { border-right: 6px solid #4f46e5; }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        body { font-family: 'Tajawal', sans-serif; background: #f0f4f8; color: #1e293b; scroll-behavior: smooth; }
+        .glass-card { background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .theory-card { border-top: 5px solid #4f46e5; transition: transform 0.3s; }
+        .theory-card:hover { transform: translateY(-5px); }
+        .btn-primary { background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); color: white; transition: all 0.3s; }
+        .btn-primary:hover { opacity: 0.9; transform: scale(1.02); }
+        
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .glass-card { border: none !important; box-shadow: none !important; }
+            .type-card { page-break-inside: avoid; border: 1px solid #eee !important; margin-bottom: 20px; }
+        }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-4 md:p-8">
 
-    <div class="max-w-5xl mx-auto">
-        
-        <div id="intro-screen" class="glass-card p-8 md:p-12 text-center max-w-3xl mx-auto">
-            <h2 class="text-3xl font-black text-indigo-900 mb-6">قبل أن نبدأ.. كيف يعمل هذا الاختبار؟</h2>
-            <p class="text-gray-600 mb-8 text-lg">يعتمد هذا المقياس على أعظم نظريتين في تاريخ التوجيه المهني:</p>
-            
-            <div class="grid md:grid-cols-2 gap-6 text-right mb-10">
-                <div class="theory-box p-5 rounded-2xl">
-                    <h3 class="font-black text-indigo-700 mb-2">1. نظرية فرانك بارسونز</h3>
-                    <p class="text-sm text-gray-600">صاحب نظرية "المطابقة"؛ حيث يرى أن نجاحك يعتمد على مطابقة **سماتك الشخصية** مع **متطلبات الوظيفة** بدقة.</p>
+    <div class="max-w-6xl mx-auto">
+        <div id="intro-screen" class="space-y-10">
+            <header class="text-center space-y-4">
+                <h1 class="text-5xl font-black text-indigo-900">منصة التوجيه المهني الاستراتيجي</h1>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">اكتشف مسارك المهني بناءً على المعايير العالمية لنظريات "سمات الأفراد" و "بيئات العمل".</p>
+                <button onclick="showNameScreen()" class="btn-primary px-12 py-5 rounded-full text-2xl font-bold shadow-2xl mt-6">ابدأ رحلة الاكتشاف الآن</button>
+            </header>
+
+            <section class="grid md:grid-cols-3 gap-6">
+                <div class="theory-card glass-card p-6">
+                    <div class="text-3xl mb-3">🛠️</div>
+                    <h3 class="font-bold text-xl mb-2 text-indigo-800">النمط الواقعي (Realistic)</h3>
+                    <p class="text-sm text-gray-600">شخصية عملية تميل للتعامل مع الآلات، الأدوات، والنباتات. يفضلون العمل الميداني والنتائج الملموسة بعيداً عن المكاتب.</p>
                 </div>
-                <div class="theory-box p-5 rounded-2xl">
-                    <h3 class="font-black text-indigo-700 mb-2">2. نموذج جون هولاند</h3>
-                    <p class="text-sm text-gray-600">قام بتصنيف الشخصيات إلى **6 أنواع (RIASEC)** لنسهل عليك معرفة البيئة المهنية التي ستُبدع فيها وتُحقق فيها ذاتك.</p>
+                <div class="theory-card glass-card p-6">
+                    <div class="text-3xl mb-3">🔍</div>
+                    <h3 class="font-bold text-xl mb-2 text-indigo-800">النمط البحثي (Investigative)</h3>
+                    <p class="text-sm text-gray-600">المفكرون والباحثون. يميلون لحل الألغاز المعقدة، التحليل العلمي، والبحث عن إجابات للمشكلات التقنية والطبية.</p>
                 </div>
-            </div>
-
-            <div class="bg-amber-50 p-4 rounded-2xl mb-8 flex items-center gap-4 text-right">
-                <span class="text-2xl">💡</span>
-                <p class="text-sm text-amber-800 font-bold">تذكر: لا توجد إجابة صحيحة أو خاطئة، الأهم هو أن تكون صادقاً مع نفسك لتكتشف شغفك الحقيقي.</p>
-            </div>
-
-            <button onclick="showNameScreen()" class="btn-primary w-full py-5 rounded-3xl font-black text-xl">فهمت، لنبدأ الآن!</button>
+                <div class="theory-card glass-card p-6">
+                    <div class="text-3xl mb-3">🎨</div>
+                    <h3 class="font-bold text-xl mb-2 text-indigo-800">النمط الفني (Artistic)</h3>
+                    <p class="text-sm text-gray-600">المبدعون الذين يكرهون القيود. يميلون للتعبير عن أنفسهم عبر الفن، الكتابة، أو التصميم ويقدرون الاستقلالية.</p>
+                </div>
+                <div class="theory-card glass-card p-6">
+                    <div class="text-3xl mb-3">🤝</div>
+                    <h3 class="font-bold text-xl mb-2 text-indigo-800">النمط الاجتماعي (Social)</h3>
+                    <p class="text-sm text-gray-600">المساعدون والمربون. شغفهم يكمن في تدريب الآخرين، علاجهم، وتقديم الدعم النفسي والتربوي للمجتمع.</p>
+                </div>
+                <div class="theory-card glass-card p-6">
+                    <div class="text-3xl mb-3">🚀</div>
+                    <h3 class="font-bold text-xl mb-2 text-indigo-800">النمط المبادر (Enterprising)</h3>
+                    <p class="text-sm text-gray-600">القادة والمسوقون. يمتلكون قدرة عالية على الإقناع، إدارة المشاريع، والمخاطرة في عالم المال والأعمال.</p>
+                </div>
+                <div class="theory-card glass-card p-6">
+                    <div class="text-3xl mb-3">📊</div>
+                    <h3 class="font-bold text-xl mb-2 text-indigo-800">النمط التقليدي (Conventional)</h3>
+                    <p class="text-sm text-gray-600">المنظمون والمدققون. يبرعون في إدارة البيانات، المحاسبة، والعمل ضمن أنظمة واضحة ودقيقة جداً.</p>
+                </div>
+            </section>
         </div>
 
-        <div id="name-screen" class="hidden glass-card p-12 text-center max-w-2xl mx-auto">
-            <h1 class="text-4xl font-black text-gray-900 mb-4">خطوتك الأولى</h1>
-            <p class="text-gray-500 mb-10">الرجاء تزويدنا باسمك لنقوم بإعداد تقريرك الشخصي</p>
-            <input type="text" id="student-name-input" placeholder="اكتب اسمك هنا" 
-                   class="w-full p-5 border-2 border-gray-100 rounded-3xl mb-8 text-center text-2xl focus:border-indigo-500 outline-none shadow-sm">
-            <button onclick="startQuiz()" class="btn-primary w-full py-5 rounded-3xl font-black text-xl">دخول الاختبار (60 سؤالاً)</button>
+        <div id="name-screen" class="hidden glass-card p-12 text-center max-w-2xl mx-auto my-20">
+            <h2 class="text-3xl font-black mb-6">قبل أن نبدأ التحليل..</h2>
+            <p class="mb-8 text-gray-500">سجل اسمك ليتم إصدار التقرير النهائي باسمك الشخصي</p>
+            <input type="text" id="student-name-input" placeholder="الاسم الكامل" class="w-full p-4 border-2 rounded-2xl mb-6 text-center text-xl outline-none focus:border-indigo-500">
+            <button onclick="startQuiz()" class="btn-primary w-full py-4 rounded-2xl font-bold text-xl">دخول المقياس (60 سؤال)</button>
         </div>
 
-        <div id="quiz-section" class="hidden max-w-2xl mx-auto">
-            <div class="flex justify-between items-center mb-8 px-2">
-                <span id="progress-text" class="font-bold text-indigo-600 text-xl">1 / 60</span>
-                <div class="w-48 bg-gray-200 h-3 rounded-full overflow-hidden">
+        <div id="quiz-section" class="hidden max-w-3xl mx-auto my-10">
+            <div class="bg-white p-4 rounded-full mb-8 shadow-sm flex items-center justify-between px-8 border">
+                <span id="progress-text" class="font-bold text-indigo-600">1 / 60</span>
+                <div class="flex-1 mx-6 bg-gray-100 h-3 rounded-full overflow-hidden">
                     <div id="progress-bar" class="bg-indigo-600 h-full transition-all" style="width: 0%"></div>
                 </div>
             </div>
-            <div id="questions-area" class="glass-card p-10 md:p-14 text-center"></div>
+            <div id="questions-area" class="glass-card p-12 text-center min-h-[400px] flex flex-col justify-center"></div>
         </div>
 
-        <div id="result-area" class="hidden">
-            <div id="capture-area" class="glass-card p-8 md:p-12">
-                <div class="flex flex-col md:flex-row justify-between items-start border-b pb-10 mb-10 gap-8">
-                    <div class="flex-1">
-                        <h2 class="text-4xl font-black text-slate-900 mb-3">تقرير التوجيه المهني الاستراتيجي</h2>
-                        <p class="text-2xl text-gray-500 mb-4 font-bold">الاسم: <span id="final-name" class="text-indigo-600"></span></p>
-                        <div id="holland-code-badges" class="flex gap-3 mt-4"></div>
+        <div id="result-area" class="hidden space-y-8 pb-20">
+            <div id="capture-area" class="glass-card p-10 bg-white">
+                <div class="border-b-4 border-indigo-600 pb-8 mb-8 flex flex-col md:flex-row justify-between items-center gap-10">
+                    <div class="space-y-4 text-center md:text-right">
+                        <h1 class="text-4xl font-black text-indigo-900">تقرير الميول المهنية الشامل</h1>
+                        <p class="text-2xl font-bold">المستفيد: <span id="final-name" class="text-indigo-600"></span></p>
+                        <div id="holland-code-badges" class="flex gap-4 justify-center md:justify-start"></div>
                     </div>
-                    <div class="bg-white p-4 rounded-3xl shadow-lg border">
-                        <canvas id="riasecChart" width="260" height="260"></canvas>
+                    <div class="w-[300px]">
+                        <canvas id="riasecChart"></canvas>
                     </div>
                 </div>
 
-                <h3 class="text-2xl font-black text-slate-800 mb-8 border-r-4 border-indigo-600 pr-4">نتائجك بناءً على معايير بارسونز وهولاند:</h3>
-                <div id="top-three-analysis" class="grid gap-8"></div>
-
-                <div class="mt-12 bg-slate-900 text-white p-10 rounded-[40px] shadow-2xl">
-                    <h4 class="text-xl font-bold mb-4 text-indigo-300">نصيحة الخبراء النهائية:</h4>
-                    <p id="final-advice" class="text-lg leading-relaxed text-slate-300"></p>
+                <div id="detailed-results" class="grid gap-10">
+                    </div>
+                
+                <div class="mt-12 bg-indigo-50 p-8 rounded-3xl border-2 border-indigo-100">
+                    <h3 class="text-2xl font-bold text-indigo-900 mb-4">💡 الخلاصة والتوجيه الاستراتيجي</h3>
+                    <p id="final-advice" class="text-lg leading-relaxed text-indigo-800"></p>
                 </div>
             </div>
 
-            <div class="mt-12 flex flex-wrap justify-center gap-6">
-                <button onclick="downloadPDF()" class="bg-indigo-600 text-white px-12 py-5 rounded-3xl font-black shadow-xl hover:bg-indigo-700 transition-all">تحميل التقرير الكامل PDF</button>
-                <button onclick="location.reload()" class="bg-white text-gray-500 border px-12 py-5 rounded-3xl font-bold hover:bg-gray-50">إعادة الاختبار</button>
+            <div class="no-print flex justify-center gap-4">
+                <button onclick="window.print()" class="btn-primary px-10 py-4 rounded-2xl font-black shadow-xl">تحميل التقرير الكامل (PDF)</button>
+                <button onclick="location.reload()" class="bg-gray-200 px-10 py-4 rounded-2xl font-bold">إعادة الاختبار</button>
             </div>
         </div>
-
     </div>
 
     <script>
-        // مصفوفة الأسئلة بصيغة رسمية فصحى
+        // مصفوفة الأسئلة (نفس الـ 60 سؤال السابقة)
         const questions = [
-            // الواقعي (R)
+            // الواقعي
             { text: "هل تفضل القيام بأعمال الصيانة والإصلاحات المنزلية بنفسك؟", cat: "R" },
             { text: "هل تنجذب للأنشطة التي تتطلب مجهوداً بدنياً وحركة مستمرة؟", cat: "R" },
             { text: "هل تستمتع باستخدام الأدوات والمعدات لتركيب الأجهزة أو الأثاث؟", cat: "R" },
@@ -108,7 +127,7 @@
             { text: "هل تجد متعة في فك وتركيب القطع الميكانيكية أو الأجهزة الإلكترونية؟", cat: "R" },
             { text: "هل تفضل ارتداء الملابس العملية المريحة التي تناسب العمل الميداني؟", cat: "R" },
             { text: "هل ترغب في تعلم كيفية تشغيل الآلات الكبيرة أو المعدات الثقيلة؟", cat: "R" },
-            // البحثي (I)
+            // البحثي
             { text: "هل تمتلك رغبة قوية في فهم آلية عمل الأشياء من الناحية العلمية؟", cat: "I" },
             { text: "هل تستمتع بمواجهة التحديات الذهنية وحل الألغاز المعقدة؟", cat: "I" },
             { text: "هل تثير المواد العلمية كالرياضيات، الفيزياء، أو الكيمياء اهتمامك؟", cat: "I" },
@@ -119,7 +138,7 @@
             { text: "هل يتملكك الفضول دائماً لمعرفة الأسباب الكامنة وراء الظواهر المختلفة؟", cat: "I" },
             { text: "هل تنجذب للمهن التي تتطلب تحليلاً دقيقاً للبيانات والأرقام؟", cat: "I" },
             { text: "هل تستهويك مجالات البرمجة أو استخدام الحاسب في البحث الأكاديمي؟", cat: "I" },
-            // الفني (A)
+            // الفني
             { text: "هل تجد متعة في الرسم، التصميم، أو تنسيق الألوان والمساحات؟", cat: "A" },
             { text: "هل تفضل العمل بأساليب مبتكرة والابتعاد عن الإجراءات الروتينية؟", cat: "A" },
             { text: "هل تميل للتعبير عن أفكارك ومشاعرك من خلال الكتابة الإبداعية؟", cat: "A" },
@@ -130,7 +149,7 @@
             { text: "هل تفضل المهن التي تمنحك الحرية الكاملة للتعبير عن إبداعك؟", cat: "A" },
             { text: "هل تستمتع بتحليل الأعمال الفنية أو مشاهدة الأفلام ذات الرؤية الإبداعية؟", cat: "A" },
             { text: "هل تميل لابتكار حلول غير تقليدية للمشكلات التي تواجهك؟", cat: "A" },
-            // الاجتماعي (S)
+            // الاجتماعي
             { text: "هل تسعى دائماً لمساعدة الآخرين والمساهمة في حل مشكلاتهم الشخصية؟", cat: "S" },
             { text: "هل تشعر بالرضا عند شرح المعلومات للآخرين ومساعدتهم على التعلم؟", cat: "S" },
             { text: "هل تفضل العمل ضمن فريق وبناء علاقات اجتماعية قوية مع الزملاء؟", cat: "S" },
@@ -141,7 +160,7 @@
             { text: "هل تفضل بيئات العمل الحيوية التي تتيح لك التفاعل المستمر مع الجمهور؟", cat: "S" },
             { text: "هل تجد نفسك أكثر إنتاجية عندما تعمل في وسط تعاوني واجتماعي؟", cat: "S" },
             { text: "هل تعتبر الأثر الإيجابي لعملك على المجتمع أهم من العائد المادي؟", cat: "S" },
-            // المبادر (E)
+            // المبادر
             { text: "هل تمتلك الرغبة في قيادة المجموعات وتوزيع المسؤوليات على الآخرين؟", cat: "E" },
             { text: "هل تثق في قدرتك على إقناع الآخرين بوجهة نظرك وتغيير آرائهم؟", cat: "E" },
             { text: "هل تطمح لتأسيس مشروعك الخاص وإدارة شؤونه بشكل مستقل؟", cat: "E" },
@@ -152,7 +171,7 @@
             { text: "هل تملك الجرأة الكافية لاتخاذ قرارات حاسمة في الأوقات الصعبة؟", cat: "E" },
             { text: "هل تستمتع بالتخطيط للمشاريع الاستراتيجية ومتابعة مؤشرات نجاحها؟", cat: "E" },
             { text: "هل تفضل المهن التي ترتبط فيها المكافآت المالية بحجم الإنجاز؟", cat: "E" },
-            // التقليدي (C)
+            // التقليدي
             { text: "هل تفضل العمل وفق نظام محدد وخطوات إجرائية واضحة؟", cat: "C" },
             { text: "هل تولي اهتماماً فائقاً للدقة والتنظيم في كافة شؤونك؟", cat: "C" },
             { text: "هل تستمتع بالتعامل مع البيانات الإحصائية والجداول المنظمة؟", cat: "C" },
@@ -165,13 +184,50 @@
             { text: "هل تعتبر نفسك شخصاً عملياً، واقعياً، ومنضبطاً إلى أقصى حد؟", cat: "C" }
         ];
 
+        // بيانات الأنماط التفصيلية
         const categories = {
-            R: { t: "الواقعي", d: "تفضل التعامل مع الأشياء المادية والآلات والعمل الميداني.", uni: "كلية الهندسة، الكليات التقنية، العلوم الزراعية.", jobs: "الهندسة الميكانيكية، الطيران، طب الأسنان، الفني التقني." },
-            I: { t: "البحثي", d: "تميل للتفكير التحليلي، البحث العلمي، وحل المشكلات المعقدة.", uni: "كلية الطب، كلية العلوم، علوم الحاسب والمعلومات.", jobs: "طبيب، مبرمج نظم، باحث أكاديمي، محلل بيانات." },
-            A: { t: "الفني", d: "تتميز بالحس الإبداعي، الاستقلالية، والميل للتعبير الفني.", uni: "كلية التصميم، كلية الإعلام، كليات الآداب والفنون.", jobs: "مصمم جرافيك، مهندس معماري، كاتب إبداعي، مخرج فني." },
-            S: { t: "الاجتماعي", d: "تجد شغفك في مساعدة الآخرين، التعليم، والتفاعل الإنساني.", uni: "كلية التربية، كلية التمريض، العلوم الإنسانية والاجتماعية.", jobs: "معلم، أخصائي موارد بشرية، مستشار نفسي، مدرب." },
-            E: { t: "المبادر", d: "تمتلك سمات قيادية، قدرة على الإقناع، وطموحاً في عالم الأعمال.", uni: "كلية إدارة الأعمال، كلية القانون، العلوم السياسية.", jobs: "مدير مشاريع، محامٍ، رائد أعمال، خبير تسويق." },
-            C: { t: "التقليدي", d: "تفضل التنظيم، الدقة، والتعامل مع البيانات والأنظمة الإدارية.", uni: "كلية المحاسبة، الإدارة المالية، تقنية المعلومات.", jobs: "محاسب قانوني، مدقق جودة، مسؤول إداري، محلل نظم." }
+            R: { 
+                t: "الواقعي (Realistic)", 
+                d: "أنت شخصية 'عملية'. تفضل التعامل مع الأشياء الملموسة أكثر من الأفكار المجردة. تمتاز بمهارات يدوية وميكانيكية عالية وتفضل العمل في الهواء الطلق أو البيئات التقنية.",
+                strengths: "القوة البدنية، المهارات التقنية، الصبر في التنفيذ، حل المشكلات العملية.",
+                uni: "هندسة الميكانيكا، هندسة الطيران، الهندسة المدنية، الهندسة الكهربائية، الطب المهني، الجيولوجيا، علوم البحار، الزراعة والإنتاج الحيواني، تكنولوجيا المعلومات (الجانب التقني)، علوم الرياضة.",
+                jobs: "مهندس ميداني، قائد طائرة، طبيب جراح، فني شبكات، مهندس زراعي، ضابط عسكري، متخصص في الطاقة المتجددة، فني مختبرات، غواص تقني، مهندس تعدين."
+            },
+            I: { 
+                t: "البحثي (Investigative)", 
+                d: "أنت شخصية 'مفكرة'. تحب الملاحظة والتعلم والتحليل. تسعى دائماً لفهم الأسباب الكامنة وراء الظواهر وتستمتع بالتحديات الفكرية المعقدة.",
+                strengths: "التفكير النقدي، التحليل الرياضي، الدقة، البحث العلمي، الاستقلالية الفكرية.",
+                uni: "الطب البشري، الصيدلة، الفيزياء، الكيمياء، الرياضيات، علوم الحاسب (الخوارزميات والذكاء الاصطناعي)، البيولوجيا الجزيئية، الاقتصاد القياسي، الفلسفة، علم النفس التجريبي.",
+                jobs: "عالم أبحاث، محلل بيانات، برمجيات ذكاء اصطناعي، طبيب استشاري، كيميائي أدوية، أستاذ جامعي، فلكي، محلل نظم، خبير اقتصاد، باحث في علم الوراثة."
+            },
+            A: { 
+                t: "الفني (Artistic)", 
+                d: "أنت شخصية 'مبدعة'. تتميز بالحس الفني العالي وتحب العمل في بيئات غير منظمة تسمح لك بالتعبير عن ذاتك بحرية. تكره الروتين والقيود الصارمة.",
+                strengths: "الخيال الواسع، الابتكار الجمالي، التعبير اللغوي، المرونة، الرؤية غير التقليدية.",
+                uni: "العمارة، التصميم الجرافيكي، الفنون البصرية، الأدب المقارن، الإعلام والاتصال، تصميم الأزياء، السينما والإنتاج المرئي، الموسيقى، التسويق الإبداعي، التصميم الداخلي.",
+                jobs: "مهندس معماري، مصمم واجهات (UI/UX)، كاتب سيناريو، مخرج فني، مؤلف، مصمم داخلي، متخصص إعلامي، رسام رقمي، مدير تسويق إبداعي، مترجم أدبي."
+            },
+            S: { 
+                t: "الاجتماعي (Social)", 
+                d: "أنت شخصية 'مساعدة'. تجد شغفك في التفاعل مع الناس وتعليمهم ومساعدتهم على النمو. تمتاز بالذكاء العاطفي والقدرة العالية على التواصل.",
+                strengths: "التواصل، التعاطف، الصبر، العمل الجماعي، الإقناع التربوي.",
+                uni: "التربية والتعليم، علم النفس، الخدمة الاجتماعية، التمريض، الموارد البشرية، العلاقات الدولية، الإرشاد المهني، علوم التغذية، اللغات، العلوم السياسية.",
+                jobs: "معلم، أخصائي نفسي، مدير موارد بشرية، مستشار تدريب، ممرض، دبلوماسي، أخصائي اجتماعي، مدرب مهارات حياة، منسق مبادرات مجتمعية، مدير علاقات عامة."
+            },
+            E: { 
+                t: "المبادر (Enterprising)", 
+                d: "أنت شخصية 'قيادية'. تحب التأثير في الآخرين وإدارة المشاريع. تنجذب نحو القوة والمكانة الاجتماعية وتمتلك مهارات خطابية وتفاوضية بارزة.",
+                strengths: "القيادة، اتخاذ القرار، الخطابة، الطموح المادي، التخطيط الاستراتيجي.",
+                uni: "إدارة الأعمال، القانون، العلوم السياسية، التسويق، الإدارة المالية، ريادة الأعمال، العلاقات الدولية، إدارة المشاريع، الاقتصاد العام، تجارة دولية.",
+                jobs: "رائد أعمال، محامي، مدير مبيعات، مدير تنفيذي، وسيط مالي، خبير تسويق، سياسي، مدير مشاريع، مستشار إداري، تاجر دولي."
+            },
+            C: { 
+                t: "التقليدي (Conventional)", 
+                d: "أنت شخصية 'منظمة'. تفضل العمل مع البيانات والأرقام ضمن قوانين واضحة. تمتاز بالدقة المتناهية والقدرة على إدارة التفاصيل الإدارية بكفاءة.",
+                strengths: "التنظيم، الدقة الرقمية، الالتزام بالقوانين، إدارة الوقت، التدقيق.",
+                uni: "المحاسبة، العلوم المالية، تقنية المعلومات (إدارة البيانات)، الإحصاء، إدارة المكاتب، إدارة الجودة، اللوجستيات، علوم المكتبات، التأمين، التدقيق المالي.",
+                jobs: "محاسب قانوني، محلل مالي، مدقق جودة، مسؤول قاعدة بيانات، أمين صندوق، مدير لوجستي، خبير إحصائي، منسق إداري، مبرمج نظم مالية، خبير تأمين."
+            }
         };
 
         let studentName = "";
@@ -181,6 +237,7 @@
         function showNameScreen() {
             document.getElementById('intro-screen').classList.add('hidden');
             document.getElementById('name-screen').classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
         function startQuiz() {
@@ -196,10 +253,10 @@
             const q = questions[currentIdx];
             document.getElementById('questions-area').innerHTML = `
                 <div class="animate-in fade-in duration-500">
-                    <h3 class="text-2xl font-bold mb-10 text-slate-800 leading-relaxed">${q.text}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <button onclick="answer(1, '${q.cat}')" class="p-6 bg-indigo-600 text-white rounded-2xl font-black text-xl hover:bg-indigo-700 shadow-lg">نعم، أتفق</button>
-                        <button onclick="answer(0, '${q.cat}')" class="p-6 bg-white border-2 text-gray-400 rounded-2xl font-bold text-xl hover:bg-gray-50">لا، لا أتفق</button>
+                    <h3 class="text-3xl font-bold mb-12 text-slate-800 leading-relaxed">${q.text}</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <button onclick="answer(1, '${q.cat}')" class="p-8 bg-indigo-600 text-white rounded-3xl font-black text-2xl hover:bg-indigo-700 shadow-xl transition-all">نعم، أتفق تماماً</button>
+                        <button onclick="answer(0, '${q.cat}')" class="p-8 bg-white border-2 text-gray-400 rounded-3xl font-bold text-2xl hover:bg-gray-50 transition-all">لا، لا أتفق</button>
                     </div>
                 </div>
             `;
@@ -225,29 +282,45 @@
             const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
             const top3 = sorted.slice(0, 3);
             
+            // شارات الكود
             document.getElementById('holland-code-badges').innerHTML = top3.map(item => `
-                <span class="bg-indigo-600 text-white px-5 py-2 rounded-2xl font-black text-2xl shadow-lg">${item[0]}</span>
+                <span class="bg-indigo-900 text-white px-6 py-2 rounded-xl font-black text-3xl shadow-lg">${item[0]}</span>
             `).join('');
 
-            document.getElementById('top-three-analysis').innerHTML = top3.map((item, index) => {
+            // التحليل التفصيلي
+            document.getElementById('detailed-results').innerHTML = top3.map((item, index) => {
                 const info = categories[item[0]];
                 return `
-                    <div class="type-card bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="text-xl font-black text-slate-800">${index+1}. نمط ${info.t}</h4>
-                            <span class="text-indigo-600 font-bold">نسبة التطابق: ${item[1]*10}%</span>
+                    <div class="type-card border-r-8 border-indigo-600 bg-slate-50 p-8 rounded-3xl">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h4 class="text-2xl font-black text-indigo-900 mb-2">المرتبة ${index+1}: ${info.t}</h4>
+                                <div class="bg-indigo-200 text-indigo-900 px-4 py-1 rounded-full text-sm font-bold inline-block">نسبة التطابق: ${item[1]*10}%</div>
+                            </div>
                         </div>
-                        <p class="text-gray-600 mb-4">${info.d}</p>
-                        <div class="text-sm bg-slate-50 p-4 rounded-xl">
-                            <p class="mb-2"><span class="font-black text-indigo-900">المسارات الأكاديمية:</span> ${info.uni}</p>
-                            <p><span class="font-black text-indigo-900">المهن المقترحة:</span> ${info.jobs}</p>
+                        <p class="text-gray-700 text-lg mb-6 leading-relaxed">${info.d}</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-sm">
+                                <h5 class="font-bold text-indigo-700 mb-3 underline">✅ أهم نقاط القوة:</h5>
+                                <p class="text-sm text-gray-600">${info.strengths}</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-2xl shadow-sm">
+                                <h5 class="font-bold text-indigo-700 mb-3 underline">🎓 التخصصات الجامعية المقترحة:</h5>
+                                <p class="text-sm text-gray-600">${info.uni}</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 bg-indigo-900 text-white p-6 rounded-2xl">
+                            <h5 class="font-bold mb-3">💼 المهن الأكثر ملائمة لنمطك:</h5>
+                            <p class="text-sm opacity-90">${info.jobs}</p>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            document.getElementById('final-advice').innerText = `عزيزي ${studentName}، بناءً على تحليل نظرية بارسونز وهولاند، تظهر نتائجك ميلاً استراتيجياً نحو المجموعات (${top3[0][0]}${top3[1][0]}${top3[2][0]}). هذا المزيج يشير إلى قدرة عالية على الإبداع والتميز في البيئات التي تدمج بين ${categories[top3[0][0]].t} و ${categories[top3[1][0]].t}. ننصحك باستكشاف التخصصات المذكورة أعلاه لضمان مسار مهني مستقر وناجح.`;
+            document.getElementById('final-advice').innerText = `عزيزي ${studentName}، يمتلك نمطك الشخصي تركيباً ثلاثياً فريداً (${top3[0][0]}${top3[1][0]}${top3[2][0]}). هذا يعني أنك تبحث عن بيئة عمل توفر لك ${categories[top3[0][0]].t} مع مساحة من ${categories[top3[1][0]].t}. ننصحك بالتركيز على التخصصات التي تدمج بين هذه المجالات لضمان أعلى مستويات الرضا الوظيفي والإنجاز المادي والمعنوي.`;
 
+            // الرسم البياني
             new Chart(document.getElementById('riasecChart'), {
                 type: 'radar',
                 data: {
@@ -261,30 +334,12 @@
                     }]
                 },
                 options: { 
-                    scales: { 
-                        r: { 
-                            suggestMin: 0, 
-                            suggestMax: 10, 
-                            ticks: { display: false },
-                            grid: { color: '#e2e8f0' }
-                        } 
-                    }, 
-                    plugins: { legend: { display: false } } 
+                    scales: { r: { suggestMin: 0, suggestMax: 10, ticks: { display: false } } },
+                    plugins: { legend: { display: false } }
                 }
             });
-        }
-
-        async function downloadPDF() {
-            const element = document.getElementById('capture-area');
-            const canvas = await html2canvas(element, { scale: 2 });
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const w = pdf.internal.pageSize.getWidth();
-            const h = (canvas.height * w) / canvas.width;
-            pdf.addImage(imgData, 'PNG', 0, 0, w, h);
-            pdf.save(`تقرير_التوجيه_المهني_${studentName}.pdf`);
+            window.scrollTo(0,0);
         }
     </script>
 </body>
-</html>
+</html>س
